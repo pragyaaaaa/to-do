@@ -3,8 +3,16 @@ import { Button, FormControl, Input, InputLabel } from "@material-ui/core";
 import './App.css';
 import Todo from './Todo';
 import db from './firebase';
-import firebase from "firebase"
+import firebase from "firebase";
+import { makeStyles } from '@material-ui/core/styles';
+import Icon from '@material-ui/core/Icon';
+import SaveIcon from '@material-ui/icons/Save';
 
+const useStyles = makeStyles((theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
 
 function App() {
   /* in a state variable, 'todos' refer to the array elemets and 'setTodos' is used to append
@@ -14,11 +22,13 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState('');
 
+  const classes = useStyles();
+
   useEffect(() => {
     db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-      setTodos(snapshot.docs.map(doc => ({ 
-        id: doc.id, 
-        todo: doc.data().todo 
+      setTodos(snapshot.docs.map(doc => ({
+        id: doc.id,
+        todo: doc.data().todo
       })))
     })
   }, [])
@@ -44,17 +54,22 @@ function App() {
           </Input>
         </FormControl>
         <Button
-          disabled={!input} /* keep button disabled till something is written in input field. */
-          variant="contained"
-          color="primary"
-          type="submit"
-          onClick={addTodo}>Add</Button>
+            variant="contained"
+            color="primary"
+            size="large"
+            disabled={!input} /* keep button disabled till something is written in input field. */
+            type="submit"
+            onClick={addTodo}
+            className={classes.button}
+            startIcon={<SaveIcon />}>
+            Add to my notes.
+            </Button>
       </form>
-      <ul>
-        {todos.map(todo => (
-          <Todo todo={todo}></Todo>
-        ))}
-      </ul>
+        <ul>
+          {todos.map(todo => (
+            <Todo todo={todo}></Todo>
+          ))}
+        </ul>
     </div>
   );
 }

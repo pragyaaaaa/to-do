@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import './Todo.css';
-import { List, ListItem, ListItemText, ListItemAvatar, Button, Modal } from "@material-ui/core";
+import { List, ListItem, ListItemText, ListItemAvatar, Button, Modal, FormControl } from "@material-ui/core";
 import db from "./firebase";
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
 import { makeStyles } from "@material-ui/core/styles"
+import EditIcon from '@material-ui/icons/Edit';
+import Icon from '@material-ui/core/Icon';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -31,30 +33,46 @@ function Todo(props) {
             todo: input
         }, { merge: true })
         handleClose();
-
+    }
+    function onDelete(){
+        var result = window.confirm("Are you sure you want to delete this note?");
+        if (result) {
+            deleteSure();
+        }
+    }
+    const deleteSure = (event) => {
+        db.collection('todos').doc(props.todo.id).delete();
+        window.alert("Deleted Successfully.");
     }
     return (
         <>
             <Modal
                 open={open}
                 onClose={handleClose}>
-                <div className={classes.paper}>
-                    <h1>Open</h1>
-                    <input 
-                    placeholder={props.todo.todo}
-                    value={input} 
-                    onChange={event => setInput(event.target.value)}></input>
-                    <Button onClick={updateTodo}>Update</Button>
-                </div>
+                <form>
+                    <div className={classes.paper}>
+                        <h1>Update your note.</h1>
+                        <input
+                            placeholder={props.todo.todo}
+                            value={input}
+                            onChange={event => setInput(event.target.value)}></input>
+                        <Button type="submit" onClick={updateTodo}>Update</Button>
+                    </div>
+                </form>
             </Modal>
             <List className="todo-list">
                 <ListItemAvatar>
                 </ListItemAvatar>
                 <ListItem>
                     <ListItemText primary={props.todo.todo} secondary={props.text} />
+                    <Icon style={{ color: "#78e08f", fontSize: 30 }}>
+                        <EditIcon onClick={handleOpen}></EditIcon>
+                    </Icon>
+                    <Icon style={{ color: "#eb2f06", fontSize: 30 }}>
+                        <DeleteSweepIcon onClick={onDelete}></DeleteSweepIcon>
+                    </Icon>
                 </ListItem>
-                <button onClick={handleOpen}>Edit</button>
-                <DeleteSweepIcon onClick={event => db.collection('todos').doc(props.todo.id).delete()}></DeleteSweepIcon>
+
             </List>
         </>
     )
