@@ -18,7 +18,7 @@ function App() {
     db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
       setTodos(snapshot.docs.map(doc => ({ 
         id: doc.id, 
-        task: doc.data().task 
+        todo: doc.data().todo 
       })))
     })
   }, [])
@@ -27,7 +27,7 @@ function App() {
     event.preventDefault();/* to stop page from refreshing everytime we click submit button */
     /*adding to firebase.*/
     db.collection('todos').add({
-      task: input,
+      todo: input,
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     })
     setTodos([...todos, input])/* spread in JS says, append input to todos, not replace */
