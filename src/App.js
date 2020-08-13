@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, FormControl, Input, InputLabel } from "@material-ui/core";
 import './App.css';
+import Todo from './Todo';
 
 function App() {
   /* in a state variable, 'todos' refer to the array elemets and 'setTodos' is used to append
@@ -33,7 +34,7 @@ function App() {
       </form>
       <ul>
         {todos.map(todo => (
-          <li>{todo}</li>
+          <Todo text={todo}></Todo>
         ))}
       </ul>
     </div>
