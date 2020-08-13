@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { Button, FormControl, Input, InputLabel } from "@material-ui/core";
 import './App.css';
 
 function App() {
@@ -12,17 +12,24 @@ function App() {
   const addTodo = (event) => {
     event.preventDefault();/* to stop page from refreshing everytime we click submit button */
     setTodos([...todos, input])/* spread in JS says, append input to todos, not replace */
-    setInput('')
+    setInput('')/*clearing the input field after adding to list*/
   }
   return (
     <div className="App">
       <form>
-      {/* Associating state 'input' variable to JSX */}
-      <input
-        value={input} /* variable and changing variable using 'setInput' */
-        onChange={event => setInput(event.target.value)}>
-      </input>
-      <button type="submit" onClick={addTodo}>Add</button>
+        {/* Associating state 'input' variable to JSX */}
+        <FormControl>
+          <InputLabel>What do you want to do? </InputLabel>
+          <Input value={input} /* variable and changing variable using 'setInput' */
+            onChange={event => setInput(event.target.value)}>
+          </Input>
+        </FormControl>
+        <Button
+          disabled={!input} /* keep button disabled till something is written in input field. */
+          variant="contained"
+          color="primary"
+          type="submit"
+          onClick={addTodo}>Add</Button>
       </form>
       <ul>
         {todos.map(todo => (
