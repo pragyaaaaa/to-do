@@ -5,6 +5,7 @@ import Todo from './Todo';
 import db from './firebase';
 import firebase from "firebase"
 
+
 function App() {
   /* in a state variable, 'todos' refer to the array elemets and 'setTodos' is used to append
   to 'todos'. Here we start with an empty list and then 'todos' will be an empty array and 
